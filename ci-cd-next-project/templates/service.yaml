@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ci-cd-next-project.fullname" . }}
+  labels:
+    {{- include "ci-cd-next-project.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ci-cd-next-project.selectorLabels" . | nindent 4 }}
