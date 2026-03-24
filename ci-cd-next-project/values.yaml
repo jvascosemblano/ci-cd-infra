@@ -3,18 +3,15 @@ image:
   repository: ghcr.io/jvascosemblano/ci-cd-next-project
   pullPolicy: IfNotPresent
   # Overridden by GitHub Actions, but good to have a default
-  tag: "latest"
-
+  tag: "f0aa6eeb27bb122503641be65e0d3c81b6558ffd"
 # 2. Next.js runs on 3000 inside the container
 service:
   type: ClusterIP
   port: 80 # External port (how other apps see it)
   targetPort: 3000 # Internal port (what the Dockerfile uses)
-
 # 3. Turn off things we aren't using yet (to avoid errors)
 ingress:
   enabled: false
 autoscaling:
   enabled: false
-
 replicaCount: 2
