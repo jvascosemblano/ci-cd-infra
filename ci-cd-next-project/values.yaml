@@ -4,14 +4,32 @@ image:
   pullPolicy: IfNotPresent
   # Overridden by GitHub Actions, but good to have a default
   tag: "f0aa6eeb27bb122503641be65e0d3c81b6558ffd"
+
 # 2. Next.js runs on 3000 inside the container
 service:
   type: ClusterIP
   port: 80 # External port (how other apps see it)
   targetPort: 3000 # Internal port (what the Dockerfile uses)
+
 # 3. Turn off things we aren't using yet (to avoid errors)
 ingress:
   enabled: false
+
 autoscaling:
   enabled: false
 replicaCount: 2
+
+livenessProbe:
+  httpGet:
+    path: / # Or /api/health if you created one
+    port: http
+  initialDelaySeconds: 15
+  periodSeconds: 20
+
+readinessProbe:
+  httpGet:
+    path: / # Ensures the homepage is actually rendering
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  failureThreshold: 3
