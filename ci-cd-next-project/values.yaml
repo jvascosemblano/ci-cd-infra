@@ -4,19 +4,32 @@ image:
   pullPolicy: IfNotPresent
   # Overridden by GitHub Actions, but good to have a default
   tag: "cb675e2d0831b5b882be32755a13a972140124a4"
+
+imagePullSecrets:
+  - name: ghcr-pull-secret
+
 # 2. Next.js runs on 3000 inside the container
 service:
   type: ClusterIP
   port: 80 # External port (how other apps see it)
   targetPort: 3000 # Internal port (what the Dockerfile uses)
 
-# 3. Turn off things we aren't using yet (to avoid errors)
-ingress:
-  enabled: false
-
 autoscaling:
   enabled: false
+
 replicaCount: 2
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  hosts:
+    - host: # AWS will provide a default URL if you don't have a domain
+      paths:
+        - path: /
+          pathType: Prefix
 
 livenessProbe:
   httpGet:
