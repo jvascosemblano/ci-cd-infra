@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ci-cd-next-project
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # 1. Where is the code?
+    repoURL: 'https://github.com/jvascosemblano/ci-cd-infra.git'
+    targetRevision: HEAD
+    path: './ci-cd-next-project' # Since your Chart.yaml is in the root
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    # 2. Where should it go?
+    server: 'https://kubernetes.default.svc'
+    namespace: default # Or create a 'prod' namespace
+  syncPolicy:
+    automated:
+      prune: true    # Delete resources if they are removed from Git
+      selfHeal: true # Fix the cluster if it deviates from Git
+    syncOptions:
+      - CreateNamespace=true # Create the destination namespace if it's missing
