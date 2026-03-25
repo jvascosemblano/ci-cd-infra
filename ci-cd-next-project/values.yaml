@@ -3,7 +3,7 @@ image:
   repository: ghcr.io/jvascosemblano/ci-cd-next-project
   pullPolicy: IfNotPresent
   # Overridden by GitHub Actions, but good to have a default
-  tag: "99119e49593a6afa9e4b1fb75b1d8554418fa082"
+  tag: "cb675e2d0831b5b882be32755a13a972140124a4"
 # 2. Next.js runs on 3000 inside the container
 service:
   type: ClusterIP
